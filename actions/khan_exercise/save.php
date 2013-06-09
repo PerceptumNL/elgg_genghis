@@ -13,29 +13,18 @@
 
 // start a new sticky form session in case of failure
 elgg_make_sticky_form('khan_exercise');
-require(dirname(dirname(dirname(__file__)))."/lib/khan_exercise.php");
+require_once(dirname(dirname(dirname(__file__)))."/lib/khan_exercise.php");
 
 // save or preview
 $save = (bool)get_input('save');
-error_log("GET");
-foreach($_GET as $k => $v) {
-	error_log($k . $v);
-} 
-error_log("post");
-foreach($_POST as $k => $v) {
-	error_log($k . $v);
-} 
+set_input('title', $_POST['title']);
 
 // store errors to pass along
 $error = FALSE;
 $error_forward_url = REFERER;
 $user = elgg_get_logged_in_user_entity();
 // edit or create a new entity
-error_log("Save debug:");
-error_log(get_input('question_id'));
-error_log(get_input('title'));
 $guid = get_guid_from_question_id(get_input('question_id'));
-error_log($guid);
 if ($guid) {
 	$entity = get_entity($guid);
 	if (elgg_instanceof($entity, 'object', 'khan_exercise') && $entity->canEdit()) {
@@ -49,17 +38,14 @@ if ($guid) {
 	$revision_text = $blog->description;
 	$new_post = $blog->new_post;
 } else {
-	$entity = new ElggKhanExercise();
-	$blog = $entity;
+	$blog = new ElggKhanExercise();
 	$blog->question_id = null;
 	$blog->save();
-	//$blog = khan_exercise_create_or_update($_GET['question_id'], $_POST['title']);
 	$new_post = TRUE;
 }
 
 
 //Check if question id exists in data base
-error_log($blog->question_id);
 if ($blog->question_id == null) {
 	$query = "INSERT INTO
 		`khan_exercises`.`khan_question`
@@ -78,7 +64,6 @@ $qstring .= " question_check = '" . $_POST["solution_checker"] . "', ";
 $qstring .= " question_error = '" . $_POST["error"] . "', ";
 $qstring .= " question_round = '" . $_POST["round"] . "' ";
 $qstring .= " WHERE question_id =".$blog->question_id."";
-error_log( $qstring);
 mysql_query($qstring);	
 set_input("question_id", $blog->question_id);
 
@@ -99,11 +84,6 @@ $values = array(
 	'question_id' => $blog->question_id,
 	'khan_hints' => array(),
 );
-error_log('HIFDSAIFDSAHIOPDSAJ');
-error_log($_POST['title_genghis']);
-error_log($qstring->question_title);
-error_log($blog->title);
-error_log($values->title);
 // fail if a required entity isn't set
 $required = array('title');
 
@@ -173,8 +153,6 @@ if (!$error) {
 }
 
 // only try to save base entity if no errors
-error_log("error");
-error_log($error);
 if (!$error) {
 	if ($blog->save()) {
 		// remove sticky form entries

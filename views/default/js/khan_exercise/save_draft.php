@@ -58,33 +58,6 @@ elgg.provide('elgg.khan_exercise');
 //};
 
 elgg.khan_exercise.init = function() {
-	$("#khan_exercise_save").click(function() {
-		try {
-			var tinymce_fields = ['statement', 'solution'];
-			$.each(tinymce_fields, function(k, v) {
-				$('[name="'+v+'"]').html(
-					tinymce.get(v).getContent({
-						format : 'html', no_events : 1
-					})
-				);
-			});
-			var nested_form = $("#khan-exercise-edit").find("form");
-			nested_form.parent().append(nested_form.clone(true).children());
-			nested_form.remove();
-			$(".list").children().first().remove();
-		} catch (err) {
-			console.log(err);
-		}
-		return true;
-	});
-		
-	//$("#khan-exercise-edit").html("");
-		
-	
-	// get a copy of the body to compare for auto save
-//	oldDescription = $('form[id=blog-post-edit]').find('textarea[name=description]').val();
-//	
-//	setInterval(elgg.khan_exercise.saveDraft, 60000);
 };
 
 elgg.register_hook_handler('init', 'system', elgg.khan_exercise.init);
