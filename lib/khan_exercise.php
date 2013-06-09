@@ -359,7 +359,7 @@ function khan_exercise_get_page_content_edit($page, $guid = 0, $revision = NULL,
 			elgg_load_js('elgg.khan_exercise');
 			$vars['action'] = 'action/khan_exercise/save?question_id='.$blog->question_id;
 
-			$content = elgg_view_form('khan_exercise/save', $vars, $body_vars);
+			$content = elgg_view('forms/khan_exercise/save', $vars);
 			$sidebar = elgg_view('khan_exercise/sidebar/revisions', $vars);
 		} else {
 			$content = elgg_echo('blog:error:cannot_edit_post');
