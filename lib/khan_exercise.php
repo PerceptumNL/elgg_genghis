@@ -77,9 +77,9 @@ function khan_exercise_get_page_content_read($guid = NULL) {
 	//$return['content'] = elgg_view_entity($blog, array('full_view' => true));
 	$return['content'] = elgg_view('khan_exercise/khan_exercise', array('entity' => $blog));
 	// check to see if we should allow comments
-	if ($blog->comments_on != 'Off' && $blog->status == 'published') {
-		$return['content'] .= elgg_view_comments($blog);
-	}
+	//if ($blog->comments_on != 'Off' && $blog->status == 'published') {
+	$return['content'] .= elgg_view_comments($blog);
+	//}
 	$return['canvas_name'] = 'one_column';
 
 	return $return;
